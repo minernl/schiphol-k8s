@@ -28,46 +28,46 @@ podman push $REGISTRY_HOST/$REGISTRY_NAME/startpagina:1.0.0
 
 # Pods
 cd hch-k8s/openshift
-kubectl apply -f startpagina-pod-1.yaml
-kubectl get pods
-kubectl logs startpagina
-kubectl exec -it pod/startpagina -- sh
-kubectl port-forward pod/startpagina 3000
-kubectl delete pod startpagina 
+oc apply -f startpagina-pod-1.yaml
+oc get pods
+oc logs startpagina
+oc exec -it pod/startpagina -- sh
+oc port-forward pod/startpagina 3000
+oc delete pod startpagina 
 
 # Deployments
-kubectl apply -f startpagina-pod-1.yaml
-kubectl get deployments
-kubectl logs deployment startpagina
-kubectl exec -it deployment/startpagina -- sh	
-kubectl port-forward deployment/startpagina 3000
+oc apply -f startpagina-pod-1.yaml
+oc get deployments
+oc logs deployment startpagina
+oc exec -it deployment/startpagina -- sh	
+oc port-forward deployment/startpagina 3000
 
 # PVCs
-kubectl apply -f startpagina-pvc-1.yaml
-kubectl get pvc
-kubectl apply -f startpagina-deployment-2.yaml
-kubectl exec -it deployment/startpagina -- sh
+oc apply -f startpagina-pvc-1.yaml
+oc get pvc
+oc apply -f startpagina-deployment-2.yaml
+oc exec -it deployment/startpagina -- sh
 
 # ReplicaSets, scaling and labels
-kubectl get rs
-kubectl scale deployment/startpagina --replicas=3
+oc get rs
+oc scale deployment/startpagina --replicas=3
 
-kubectl exec -it deployment/startpagina -- sh
-kubectl get pods
-kubectl label pods startpagina-7966b6b5fc-94c9t  --overwrite app=none
-kubectl delete pod startpagina-7966b6b5fc-94c9t
+oc exec -it deployment/startpagina -- sh
+oc get pods
+oc label pods startpagina-7966b6b5fc-94c9t  --overwrite app=none
+oc delete pod startpagina-7966b6b5fc-94c9t
 
 # Services
-kubectl apply -f startpagina-service-1.yaml
-kubectl get services
-kubectl port-forward service/startpagina 3000
-kubectl apply -f startpagina-service-2.yaml
+oc apply -f startpagina-service-1.yaml
+oc get services
+oc port-forward service/startpagina 3000
+oc apply -f startpagina-service-2.yaml
 
 # Routes
-kubectl apply -f startpagina-route-1.yaml
-kubectl get routes
-kubectl port-forward service/startpagina 3000
-kubectl apply -f startpagina-service-2.yaml
+oc apply -f startpagina-route-1.yaml
+oc get routes
+oc port-forward service/startpagina 3000
+oc apply -f startpagina-service-2.yaml
 
 # Podman part 2
 cd hch-k8s/docker-2
@@ -83,18 +83,18 @@ podman push $REGISTRY_HOST/$REGISTRY_NAME/startpagina-store:1.0.0
 # Openshift part 2
 cd hch-k8s/openshift-2
 
-kubectl apply -f startpagina-deployment-4.yaml
-kubectl apply -f startpagina-service-3.yaml
-kubectl apply -f startpagina-deployment-5.yaml
+oc apply -f startpagina-deployment-4.yaml
+oc apply -f startpagina-service-3.yaml
+oc apply -f startpagina-deployment-5.yaml
 
-kubectl apply -f startpagina-configmap-1.yaml
+oc apply -f startpagina-configmap-1.yaml
 
-kubectl apply -f startpagina-secrets-1.yaml
-kubectl get secrets
-kubectl describe secret startpagina-store
-kubectl get secret startpagina-store -o jsonpath="{.data.TOKEN}"
-kubectl get secret startpagina-store -o jsonpath="{.data.TOKEN}" | base64
+oc apply -f startpagina-secrets-1.yaml
+oc get secrets
+oc describe secret startpagina-store
+oc get secret startpagina-store -o jsonpath="{.data.TOKEN}"
+oc get secret startpagina-store -o jsonpath="{.data.TOKEN}" | base64
 
-kubectl apply -f startpagina-deployment-6.yaml
+oc apply -f startpagina-deployment-6.yaml
 
-kubectl apply -f startpagina-deployment-7.yaml
+oc apply -f startpagina-deployment-7.yaml
