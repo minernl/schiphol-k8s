@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: startpagina
+spec:
+  type: LoadBalancer
+  selector:
+    app: startpagina
+  ports:
+    - port: 3000
+      targetPort: 3000

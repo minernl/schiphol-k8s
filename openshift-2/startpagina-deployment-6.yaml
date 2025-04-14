@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: startpagina
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: startpagina
+  template:
+    metadata:
+      labels:
+        app: startpagina
+    spec:
+      containers:
+      - name: startpagina
+        image: janbakkerhch/startpagina-web:1.0.0 # image-registry.openshift-image-registry.svc:5000/jbakkerschiphol-dev/startpagina-web:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        # env:
+        # - name: UNHEALTHY_AFTER
+        #   value: '60'
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources: 
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 20m
+            memory: 64Mi
+        envFrom:
+        - configMapRef:
+            name: startpagina
+        - secretRef:
+            name: startpagina
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: startpagina-store
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: startpagina-store
+  template:
+    metadata:
+      labels:
+        app: startpagina-store
+    spec:
+      containers:
+      - name: startpagina-store
+        image: janbakkerhch/startpagina-store:1.0.0 # image-registry.openshift-image-registry.svc:5000/jbakkerschiphol-dev/startpagina-store:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        # env:
+        # - name: UNHEALTHY_AFTER
+        #   value: '60'
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources: 
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 20m
+            memory: 64Mi
+        envFrom:
+        - configMapRef:
+            name: startpagina-store
+        - secretRef:
+            name: startpagina-store
+        volumeMounts:
+        - name: links
+          mountPath: '/usr/src/app/data'
+          # readOnly: true
+      volumes:
+      - name: links
+        configMap:
+          name: startpagina-store
+          items:
+          - key: links.yaml
+            path: links.yaml

@@ -1,0 +1,3 @@
+cr: crhch.azurecr.io/
+host: hchingress.westeurope.cloudapp.azure.com
+replicas: 1

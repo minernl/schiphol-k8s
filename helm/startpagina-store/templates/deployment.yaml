@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  replicas: {{ hasKey .Values "replicas" | ternary .Values.replicas 1 }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+      labels:
+        app: {{ .Chart.Name }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.cr | default "" }}{{ .Chart.Name }}:{{ .Chart.AppVersion }}
+        imagePullPolicy: {{ hasKey .Values "cr" | ternary "Always" "Never" }}
+        ports:
+        - containerPort: {{ .Values.port }}
+        resources: 
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 20m
+            memory: 64Mi
+        envFrom:
+        - configMapRef:
+            name: {{ .Chart.Name }}
+        - secretRef:
+            name: {{ .Chart.Name }}
+        volumeMounts:
+        - name: links
+          mountPath: '/usr/src/app/data'
+          readOnly: true
+      volumes:
+      - name: links
+        configMap:
+          name: {{ .Chart.Name }}
+          items:
+          - key: links.yaml
+            path: links.yaml

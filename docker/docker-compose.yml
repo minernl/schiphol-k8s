@@ -1,0 +1,11 @@
+# Build images:
+# docker build -t startpagina .
+
+services:
+  startpagina:
+    image: startpagina
+    container_name: startpagina
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/usr/src/app/data

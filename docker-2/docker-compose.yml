@@ -1,0 +1,24 @@
+# Build images:
+# docker build -t startpagina-store ./store
+# docker build -t startpagina-web ./web
+
+services:
+  startpagina-web:
+    image: startpagina-web
+    container_name: startpagina-web
+    ports:
+      - "3000:3000"
+    networks:
+      - startpagina-network
+
+  startpagina-store:
+    image: startpagina-store
+    container_name: startpagina-store
+    # volumes:
+    #  - ./data:/usr/src/app/data
+    networks:
+      - startpagina-network
+
+networks:
+  startpagina-network:
+    driver: bridge

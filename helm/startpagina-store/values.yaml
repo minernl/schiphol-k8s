@@ -1,0 +1,3 @@
+path: /startpagina-store
+port: 8000
+replicas: 2

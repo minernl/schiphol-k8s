@@ -1,0 +1,29 @@
+// scss file to build spectre-hch with hetconsultancyhuis colours
+
+// Define variables to override default ones
+$primary-color: #00abc2; // pantone 3125 U
+$dark-color: #293c48; // dark variant of pantone 7701 U = #496b7f
+$link-color: darken($primary-color, 10%);
+
+// Import full Spectre source code
+@import "../node_modules/@spectre-org/spectre-css/src/spectre";
+
+// Additional changes for HCH
+.bg-white {
+  background-color: white;
+}
+
+.card-3d {
+  border: 0;
+  box-shadow: 0 .25rem 1rem rgba(48, 55, 66, .15);
+  margin: .8rem .4rem 0
+}
+
+li {
+  margin-left: 0;
+}
+
+ul {
+  list-style-position: outside;
+  margin-left: 0;
+}

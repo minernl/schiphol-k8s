@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  type: {{ hasKey .Values "host" | ternary "ClusterIP" "LoadBalancer" }}
+  selector:
+    app: {{ .Chart.Name }}
+  ports:
+    - port: {{ .Values.port }}
+      targetPort: {{ .Values.port }}

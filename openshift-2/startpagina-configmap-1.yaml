@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: startpagina
+data:
+  BACKEND: http://startpagina-store:8000
+  PORT: '3000'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: startpagina-store
+data:
+  PORT: '8000'
+  links.yaml: |
+    name: Links from ConfigMap
+    sections: []

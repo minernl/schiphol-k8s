@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}
+data:
+  BACKEND: {{ .Values.backend | default "http://startpagina-store:8000" | quote }}
+  PORT: {{ .Values.port | quote }}

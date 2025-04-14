@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: startpagina
+spec:
+  containers:
+  - name: startpagina
+    image: janbakkerhch/startpagina:1.0.0
+    ports:
+    - containerPort: 3000 # informational only
