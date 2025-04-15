@@ -3,7 +3,7 @@ apiVersion: route.openshift.io/v1
 metadata:
   name: startpagina
 spec:
-  host: startpagina-jbakkerschiphol-dev.apps.rm2.thpm.p1.openshiftapps.com
+  host: startpagina-xxxxxxxx-dev.apps.rm2.thpm.p1.openshiftapps.com
   path: /
   to:
     kind: Service

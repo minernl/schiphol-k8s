@@ -64,6 +64,7 @@ oc port-forward service/startpagina 3000
 oc apply -f startpagina-service-2.yaml
 
 # Routes
+# FIX THE project/namespace NAME IN startpagina-route-1.yaml
 oc apply -f startpagina-route-1.yaml
 oc get routes
 oc port-forward service/startpagina 3000
