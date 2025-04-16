@@ -9,7 +9,7 @@ Since the Openshift developer sandbox does not allow install of the KEDA operato
   * `helpers/pvc-inspection.yaml`: Contains definition for an inspection pod.
   * `jobs/csv-processor-scaled-jobs.yaml`: Contains the definition of ScaledJob used for aggregating CSV files. Central file for KEDA.
   * `jobs/csv-processor.yaml`: Contains a job for testing the csv-processor.
-  * `jobs/csv-processor-cronjob.yaml`: Contains a cronjob that triggers evry minute a csv-processor job that aggregates one CSV file.
+  * `jobs/csv-processor-cronjob.yaml`: Contains a cronjob that triggers every minute a csv-processor job that aggregates one CSV file.
   * `jobs/data-generator.yaml`: Contains definition for a job that generates raw CSV files that should be aggregated by the ScaledJob processes.
   * `services/redis-service.yaml`: Contains definition for a Redis service that exposes the Redis deployment within the cluster.
   * `volumes/data-pvc.yaml`: Contains definition for a Persitent Volume Claim used for storing and reading CSV data.
@@ -21,10 +21,10 @@ Since the Openshift developer sandbox does not allow install of the KEDA operato
 # Tutorial
 
 What we will do is:
-* Set up a PVC that will contain a directory raw with files that needs to be processed.
+* Set up a PVC that will contain a directory raw which coontains files that need to be processed.
 * Set up a redis instance which holds a list (queue) of files to be processed.
 * Run a job to create the raw CSV files.
-* Set up a cronjob that start a job every minute that processed one raw file and places it in the processed directory of the PVC.
+* Set up a cronjob that starts a job every minute that processes one raw file and places it in the processed directory of the PVC.
 
 ```
 # Let's do the tutorial on Openshift
