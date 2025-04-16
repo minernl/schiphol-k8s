@@ -1,18 +1,25 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: data-generator
+  name: csv-processor
 spec:
   template:
     spec:
       containers:
-      - name: data-generator
-        image: janbakkerhch/datagenerator # image-registry.openshift-image-registry.svc:5000/jbakkerschiphol-dev/datagenerator
+      - name: csv-processor
+        image: janbakkerhch/csvprocessor # image-registry.openshift-image-registry.svc:5000/jbakkerschiphol-dev/csvprocessor
         env:
         - name: REDIS_HOST
           value: redis
         - name: REDIS_LIST
           value: csvs-to-process
+        resources:
+          limits:
+            cpu: "0.2"
+            memory: "100Mi"
+          requests:
+            cpu: "0.2"
+            memory: "100Mi"
         volumeMounts:
         - name: data-volume
           mountPath: /app/data

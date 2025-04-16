@@ -4,7 +4,10 @@ metadata:
   name: data-pvc
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Gi
+  # available in Openshift for ReadWriteMany:
+  storageClassName: efs-sc
+  volumeMode: Filesystem

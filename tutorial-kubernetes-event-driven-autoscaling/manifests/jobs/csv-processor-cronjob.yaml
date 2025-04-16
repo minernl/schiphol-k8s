@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: csv-processor-cronjob
+spec:
+  schedule: "*/1 * * * *" # run once every minute
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: csv-processor
+            image: janbakkerhch/csvprocessor # image-registry.openshift-image-registry.svc:5000/jbakkerschiphol-dev/csvprocessor
+            env:
+            - name: REDIS_HOST
+              value: redis
+            - name: REDIS_LIST
+              value: csvs-to-process
+            resources:
+              limits:
+                cpu: "0.2"
+                memory: "100Mi"
+              requests:
+                cpu: "0.2"
+                memory: "100Mi"
+            volumeMounts:
+            - name: data-volume
+              mountPath: /app/data
+          restartPolicy: Never
+          volumes:
+          - name: data-volume
+            persistentVolumeClaim:
+              claimName: data-pvc
