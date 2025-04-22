@@ -21,7 +21,7 @@ Since the Openshift developer sandbox does not allow install of the KEDA operato
 # Tutorial
 
 What we will do is:
-* Set up a PVC that will contain a directory raw which coontains files that need to be processed.
+* Set up a PVC that will contain a directory raw which contains files that need to be processed.
 * Set up a redis instance which holds a list (queue) of files to be processed.
 * Run a job to create the raw CSV files.
 * Set up a cronjob that starts a job every minute that processes one raw file and places it in the processed directory of the PVC.
@@ -37,7 +37,7 @@ oc get deployments
 oc get pods
 oc get services
 
-# Openshift does like it when redis writes to the local filesystem.
+# Openshift does not like it when redis writes to the local filesystem.
 # We will disable persistance by changing the redis configuration.
 # DO NOT SKIP THIS and repeat this when the redis pod is restarted.
 oc exec -it deployment/redis -- sh
