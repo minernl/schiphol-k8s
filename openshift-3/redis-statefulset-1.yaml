@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-ss
+spec:
+  serviceName: "redis-service"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      initContainers:
+      - name: init-redis
+        image: bash:latest
+        command:
+        - bash
+        - "-c"
+        - |
+          set -ex
+          # Generate redis server-id from pod ordinal index.
+          [[ `hostname` =~ -([0-9]+)$ ]] || exit 1
+          ordinal=${BASH_REMATCH[1]}
+          # Copy appropriate redis config files from config-map to respective directories.
+          if [[ $ordinal -eq 0 ]]; then
+            cp /mnt/master.conf /etc/redis-config.conf
+          else
+            cp /mnt/slave.conf /etc/redis-config.conf
+            # check the IP address, somehow nslookup redis-ss-0.redis-service results in:
+            # ** server can't find redis-ss-0.redis-service: NXDOMAIN
+            IP=$(ping -c 1 redis-ss-0.redis-service | grep 'PING' | awk '{print $3}' | tr -d '():')
+            echo "redis-ss-0.redis-service --> $IP"
+            # end of check the IP address
+          fi
+        volumeMounts:
+        - name: config-dir
+          mountPath: /etc
+          subPath: redis.conf
+        - name: config-map
+          mountPath: /mnt/
+      containers:
+      - name: redis
+        image: redis:latest
+        ports:
+        - containerPort: 6379
+          name: redis
+        command:
+          - redis-server
+          - "/etc/redis-config.conf"
+        volumeMounts:
+        - name: config-dir
+          mountPath: /etc
+          subPath: redis.conf
+        - name: redis-data
+          mountPath: /data
+      volumes:
+      - name: config-dir
+        emptyDir: {}
+      - name: config-map
+        configMap:
+          name: redis-ss-configuration
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

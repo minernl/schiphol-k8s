@@ -1,0 +1,5 @@
+cr: janbakkerhch/
+host: startpagina-jbakkerschiphol-dev.apps.rm2.thpm.p1.openshiftapps.com
+ingress: false
+replicas: 1
+route: true

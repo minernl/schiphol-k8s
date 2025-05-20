@@ -1,3 +1,5 @@
 cr: crhch.azurecr.io/
 host: hchingress.westeurope.cloudapp.azure.com
+ingress: true
 replicas: 1
+route: false

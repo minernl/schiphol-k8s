@@ -1,0 +1,23 @@
+# Build images:
+# docker build -t startpagina-redis ./redis
+
+services:
+  startpagina-redis:
+    image: startpagina-redis
+    container_name: startpagina-redis
+    ports:
+      - "3000:3000"
+    networks:
+      - startpagina-network
+
+  redis-service:
+    image: redis:latest
+    command: ["redis-server"]
+    ports:
+      - "6379:6379"
+    networks:
+      - startpagina-network
+
+networks:
+  startpagina-network:
+    driver: bridge
