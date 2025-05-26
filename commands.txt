@@ -99,3 +99,37 @@ oc get secret startpagina-store -o jsonpath="{.data.TOKEN}" | base64
 oc apply -f startpagina-deployment-6.yaml
 
 oc apply -f startpagina-deployment-7.yaml
+
+# Openshift part 3
+cd schiphol-k8s/openshift-3 
+oc apply -f redis-service-1.yaml
+oc apply -f redis-configmap-1.yaml
+oc apply -f redis-statefulset-1.yaml
+oc get services
+oc get endpoints
+oc get pods
+oc get pvc
+
+oc apply -f startpagina-deployment-7.yaml
+oc port-forward deployment/startpagina 3000:3000
+
+oc exec -it redis-ss-0 -- bash
+redis-cli
+GET links
+hostname
+cat /etc/redis-config.conf
+
+oc scale -n redis statefulset redis-ss --replicas=2
+oc get endpoints
+oc get pods
+oc get pvc
+
+oc debug redis-ss-0 -it --image=nicolaka/netshoot
+nslookup redis-ss-0.redis-service
+nc -vz redis-ss-1.redis-service 6379
+
+oc logs redis-ss-0
+oc logs redis-ss-0 -c init-redis
+oc exec -it redis-ss-0 -- bash
+oc exec -it redis-ss-0 -c init-redis -- bash
+oc exec -it redis-ss-0 -c debugger-lz2nj -- bash

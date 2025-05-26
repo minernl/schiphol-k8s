@@ -1,5 +1,6 @@
 # Build images:
 # docker build -t startpagina-redis ./redis
+# docker build -t safesecrets-controller ./safesecrets-controller
 
 services:
   startpagina-redis:
