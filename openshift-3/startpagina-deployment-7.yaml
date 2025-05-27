@@ -16,6 +16,9 @@ spec:
       - name: startpagina
         image: janbakkerhch/startpagina-redis:1.0.0 # image-registry.openshift-image-registry.svc:5000/jbakkerschiphol-redis/startpagina-web:1.0.0
         imagePullPolicy: Always
+        env:
+        - name: BACKEND
+          value: redis://redis-ss-0.redis-service # this means that we always go to the master redis and will never access a redis replica, so not optimal
         ports:
         - containerPort: 3000
         # env:
